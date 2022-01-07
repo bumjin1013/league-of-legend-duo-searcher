@@ -1,0 +1,6 @@
+module Pods_lol {
+  umbrella header "Pods-lol-umbrella.h"
+
+  export *
+  module * { export * }
+}
