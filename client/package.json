@@ -19,6 +19,7 @@
     "axios": "^0.24.0",
     "http-proxy-middleware": "^2.0.1",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "react": "17.0.2",
     "react-native": "0.66.4",
     "react-native-gesture-handler": "^2.1.0",

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Image } from 'react-native'
 import axios from 'axios';
 import { Dimensions } from 'react-native';
 import moment from 'moment';
+import 'moment/locale/ko'; 
+import 'moment-timezone';
 
 const WIDTH = Dimensions.get('window').height / 23; 
 
@@ -58,8 +60,7 @@ const Match = (props) => {
         }
     }
 
-    console.log(props.tier);
-
+    console.log(moment.tz.setDefault("Asia/Seoul")   )
     const filterMatch = (position, tier) => {
         if(position === '' && tier === ''){
             return match;
@@ -73,11 +74,11 @@ const Match = (props) => {
         
     }
 
-
     const renderMatch = filterMatch(props.position, props.tier) && filterMatch(props.position, props.tier).map((item) => {
 
+        console.log(item.createdAt);
         return (
-            <View style={styles.container}>
+            <View style={styles.container} index={item._id}>
                 <View style={styles.info}>
                     <Text style={styles.nameText}>{item.name}</Text>
                     <View style={styles.infoImage}>
@@ -90,10 +91,8 @@ const Match = (props) => {
                     <Text style={styles.memoText}>{item.memo}</Text>
                 </View>
                 <View style={styles.timeContainer}>
-                    <Text style={styles.timeText}>{moment(item.createdAt).fromNow()}</Text>
+                    <Text style={styles.timeText}>{moment(Date(), item.created).fromNow()}</Text>
                 </View>
-                
-              
             </View>
         )
     })
@@ -113,6 +112,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#A0A0A0',
         borderWidth: 1,
+        marginBottom: 0,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
         
     },
     nameText: {
@@ -135,7 +143,9 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 5,
         borderRadius: 5,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderColor: '#A0A0A0',
+        borderWidth: 1
     },
     infoImage: {
         flexDirection: 'row',

@@ -4,9 +4,9 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { Dimensions } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addMatch } from '../../../_actions/match_actions';
+import moment from 'moment';
 const WIDTH = Dimensions.get('window').height / 20; 
 const TIERSIZE = Dimensions.get('window').height / 18;
-const api_key = 'RGAPI-799f53ca-6d79-4b05-9bed-1a5e43c5aedf';
 
 const AddPlayer = (props) => {
 
@@ -14,7 +14,6 @@ const AddPlayer = (props) => {
     const [position, setPosition] = useState('');
     const [name, setName] = useState('');
     const [memo, setMemo] = useState('');
-    const [accountId, setAccountId] = useState('');
     const [tier, setTier] = useState('');
 
     const onPressPosition = (e) => {
@@ -37,19 +36,25 @@ const AddPlayer = (props) => {
         
         if(name === ''){
             Alert.alert('소환사 이름을 입력해주세요');
+        } else if(position === ''){
+            Alert.alert('포지션을 선택해주세요')
+        } else if(tier === ''){
+            Alert.alert('티어를 선택해주세요')
+        } else if(memo === ''){
+            Alert.alert('메모를 입력해주세요')
         } else {
             let body = {
                 name: name,
                 tier: tier,
                 position: position,
                 memo: memo,
-                created: Date.now()
+                created: Date()
             }
             dispatch(addMatch(body));
             props.changeVisible(false);
         }
     }
-    console.log(memo, name);
+
     return (
          <Modal transparent={true} visible={props.visible} animationType='slide'>
             <View style={styles.container}>
