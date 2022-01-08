@@ -1,17 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux';
 import { StyleSheet, Image, Text, View, TextInput, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign';
+
 import { Dimensions } from 'react-native';
 import AddPlayer from './section/AddPlayer';
-
+import Match from './section/Match';
+import Tier from './section/Tier';
 const WIDTH = Dimensions.get('window').height / 15; 
+
 const LandingScreen = () => {
 
+    const dispatch = useDispatch();
+
+    const [match, setMatch] = useState([]);
+    const [tier, setTier] = useState('');
     const [position, setPosition] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [tierVisible, setTierVisible] = useState(false);
+
     const onPressPosition = (e) => {
         position === e ? setPosition('') : setPosition(e)
     }
+    
 
     return (
         <SafeAreaView style={styles.container}>
@@ -33,10 +43,7 @@ const LandingScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.ButtonContainer}>  
-                <TouchableOpacity style={styles.tierBtn}>
-                    <Text style={styles.tierText}>티어</Text>
-                    <Icon name='caretdown' size={20} color='white' />
-                </TouchableOpacity>
+                <Tier visible={tierVisible} changeVisible={setTierVisible} changeTier={setTier} tier={tier}/>
                 <TouchableOpacity style={styles.addPlayerBtn} onPress={() => setModalVisible(true)}>
                     <Text style={styles.playerText}>소환사 등록하기</Text>
                     <AddPlayer visible={modalVisible} changeVisible={setModalVisible}/>
@@ -44,9 +51,7 @@ const LandingScreen = () => {
             </View>
             <View style={styles.contents}>
                 <ScrollView style={styles.scroll}>
-                    <View style={styles.item}>
-                        <Text> 1 </Text>
-                    </View>
+                    <Match position={position} tier={tier}/>
                 </ScrollView>
             </View>
         </SafeAreaView>
@@ -66,7 +71,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         marginLeft: 15,
-        marginRight: 15
+        marginRight: 15,
     },
     contents: {
         flex: 8
@@ -90,29 +95,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         
     },
-    tierBtn: {
-        backgroundColor: '#947118',
-        width: '30%',
-        height: 30,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        borderRadius: 5,
-        flexDirection: 'row'
-    },
     addPlayerBtn: {
         backgroundColor: '#404040',
         width: '40%',
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5
+        borderRadius: 5,
     },
     playerText: {
-        fontSize: 18,
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    tierText: {
         fontSize: 18,
         color: 'white',
         fontWeight: 'bold'

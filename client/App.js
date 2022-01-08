@@ -7,6 +7,16 @@ import ChatScreen from "./src/components/ChatScreen/ChatScreen";
 import MyPageScreen from "./src/components/MyPageScreen/MyPageScreen";
 import Icon from 'react-native-vector-icons/AntDesign';
 
+import {Provider} from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import promiseMiddleware from 'redux-promise'; 
+import ReduxThunk from 'redux-thunk';
+import Reducer from './src/_reducers'
+import Auth from './src/hoc/auth';
+
+
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +24,16 @@ const Tab = createBottomTabNavigator();
 function App () {
 
   return (
-    <NavigationContainer>
+    <Provider
+    store={createStoreWithMiddleware(
+        Reducer,
+        compose(
+        window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+        )
+    )}
+>
+<NavigationContainer>
       <Tab.Navigator 
         screenOptions={{
           tabBarShowLabel: false,
@@ -45,6 +64,8 @@ function App () {
             }}/>
       </Tab.Navigator>
     </NavigationContainer>
+</Provider>
+    
     
   )
 }

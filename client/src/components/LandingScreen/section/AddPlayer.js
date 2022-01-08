@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, TextInput, View, Modal, TouchableOpacity, Image, Alert, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Dimensions } from 'react-native';
-import axios from 'axios';
-
+import { useDispatch } from 'react-redux';
+import { addMatch } from '../../../_actions/match_actions';
 const WIDTH = Dimensions.get('window').height / 20; 
 const TIERSIZE = Dimensions.get('window').height / 18;
 const api_key = 'RGAPI-799f53ca-6d79-4b05-9bed-1a5e43c5aedf';
 
 const AddPlayer = (props) => {
 
+    const dispatch = useDispatch();
     const [position, setPosition] = useState('');
     const [name, setName] = useState('');
     const [memo, setMemo] = useState('');
@@ -24,29 +25,37 @@ const AddPlayer = (props) => {
         tier === e ? setTier('') : setTier(e);
     }
 
-    const onPressSubmit = () => {
-        let replacedName = name.replace(/ /g, "%20");
-        
-        if(name === '') {
-            Alert.alert('소환사 이름을 입력해주세요.')
-        } else {
-            axios.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${replacedName}?api_key=${api_key}`)
-            .then(response => {
-                
-            })
-            .catch(err => {
-                Alert.alert('존재하지 않는 소환사 입니다.');
-            })
-        }
-        
+    const onPressClose = () => {
+        props.changeVisible(false);
+        setPosition('');
+        setName('');
+        setMemo('');
+        setTier('');
     }
- 
+
+    const onPressSubmit = () => {
+        
+        if(name === ''){
+            Alert.alert('소환사 이름을 입력해주세요');
+        } else {
+            let body = {
+                name: name,
+                tier: tier,
+                position: position,
+                memo: memo,
+                created: Date.now()
+            }
+            dispatch(addMatch(body));
+            props.changeVisible(false);
+        }
+    }
+    console.log(memo, name);
     return (
          <Modal transparent={true} visible={props.visible} animationType='slide'>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>소환사 등록하기</Text>
-                    <TouchableOpacity onPress={() => props.changeVisible(false)}>
+                    <TouchableOpacity onPress={onPressClose}>
                         <Icon name='close' size={22} color='white' />
                     </TouchableOpacity>
                 </View>
@@ -107,10 +116,10 @@ const AddPlayer = (props) => {
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.text}>메모</Text>
-                    <TextInput style={styles.textInput} color='white'/>
+                    <TextInput style={styles.textInput} color='white' onChangeText={setMemo}/>
                 </View>
                 <View style={styles.button}>
-                    <TouchableOpacity style={styles.closeBtn} onPress={() => props.changeVisible(false)}>
+                    <TouchableOpacity style={styles.closeBtn} onPress={onPressClose}>
                         <Text style={styles.btnText}>취소</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.submitBtn} onPress={onPressSubmit}>
