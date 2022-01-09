@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react'
 import { StyleSheet, Image, Text, View, TextInput, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native'
-
 import { Dimensions } from 'react-native';
 import AddPlayer from './section/AddPlayer';
 import Match from './section/Match';
 import Tier from './section/Tier';
+
 const WIDTH = Dimensions.get('window').height / 15; 
 
-const LandingScreen = () => {
+const LandingScreen = ({ navigation }) => {
 
-    const dispatch = useDispatch();
-
-    const [match, setMatch] = useState([]);
     const [tier, setTier] = useState('');
     const [position, setPosition] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
@@ -21,7 +17,6 @@ const LandingScreen = () => {
     const onPressPosition = (e) => {
         position === e ? setPosition('') : setPosition(e)
     }
-    
 
     return (
         <SafeAreaView style={styles.container}>

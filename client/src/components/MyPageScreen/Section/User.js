@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import { Dimensions } from 'react-native';
 
 const HEIGHT = Dimensions.get('window').height / 4.5; 
 
-const User = () => {
+const User = (props) => {
+
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity style={styles.loginBtn} onPress={() => props.onChangeVisible(true)}>
                 <Text style={styles.loginText}>로그인</Text>
             </TouchableOpacity>
         </SafeAreaView>

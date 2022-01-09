@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, TextInput, View, Modal, TouchableOpacity, Image, Alert, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Dimensions } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { addMatch } from '../../../_actions/match_actions';
 import moment from 'moment';
+import axios from 'axios';
 const WIDTH = Dimensions.get('window').height / 20; 
 const TIERSIZE = Dimensions.get('window').height / 18;
 
 const AddPlayer = (props) => {
 
-    const dispatch = useDispatch();
     const [position, setPosition] = useState('');
     const [name, setName] = useState('');
     const [memo, setMemo] = useState('');
@@ -50,7 +49,14 @@ const AddPlayer = (props) => {
                 memo: memo,
                 created: Date()
             }
-            dispatch(addMatch(body));
+            axios.post('http://192.168.0.8:5000/api/matches/match', body)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
             props.changeVisible(false);
         }
     }

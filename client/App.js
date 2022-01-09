@@ -1,23 +1,21 @@
 import React from "react";
-import { createStackNavigator } from '@react-navigation/stack';
+
 import LandingScreen from "./src/components/LandingScreen/LandingScreen";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChatScreen from "./src/components/ChatScreen/ChatScreen";
-import MyPageScreen from "./src/components/MyPageScreen/MyPageScreen";
 import Icon from 'react-native-vector-icons/AntDesign';
-
 import {Provider} from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise'; 
 import ReduxThunk from 'redux-thunk';
 import Reducer from './src/_reducers'
 import Auth from './src/hoc/auth';
-
+import MyPageStack from "./src/components/MyPageScreen/Stack/MyPageStack";
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
-const Stack = createStackNavigator();
+
 const Tab = createBottomTabNavigator();
 
 
@@ -42,22 +40,22 @@ function App () {
           }
         }}>
         <Tab.Screen 
-          name="Chat" 
-          component={ChatScreen} 
+          name="ChatTab" 
+          component={Auth(ChatScreen, null)} 
           options={{ 
             headerShown: false, 
             tabBarIcon: () => <Icon name='message1' size={28} color='white'/>
             }}/>
         <Tab.Screen 
-          name="Landing" 
-          component={LandingScreen} 
+          name="LandingTab" 
+          component={Auth(LandingScreen, null)} 
           options={{ 
             headerShown: false,
             tabBarIcon: () => <Icon name='home' size={28} color='white'/> 
           }}/>
         <Tab.Screen 
-          name="MyPage" 
-          component={MyPageScreen} 
+          name="MyPageTab" 
+          component={MyPageStack} 
           options={{ 
             headerShown: false,
             tabBarIcon: () => <Icon name='user' size={28} color='white'/> 

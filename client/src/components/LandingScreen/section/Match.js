@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import axios from 'axios';
 import { Dimensions } from 'react-native';
 import moment from 'moment';
 import 'moment/locale/ko'; 
 import 'moment-timezone';
+import { WebView } from 'react-native-webview';
 
 const WIDTH = Dimensions.get('window').height / 23; 
 
@@ -18,6 +19,10 @@ const Match = (props) => {
         .then(response => {
             setMatch(response.data.doc);
             setFilter(match);
+        })
+        .catch(err => {
+            console.log(err);
+            throw err
         })
     }, [])
 
@@ -60,7 +65,15 @@ const Match = (props) => {
         }
     }
 
-    console.log(moment.tz.setDefault("Asia/Seoul")   )
+    const onPressPlayer = () => {
+        return (
+            <WebView
+                source={{uri: 'https://www.op.gg/summoner/userName=hide%20on%20bush'}}
+                style={{marginTop: 20}}
+            />
+        )
+    }
+
     const filterMatch = (position, tier) => {
         if(position === '' && tier === ''){
             return match;
@@ -75,12 +88,12 @@ const Match = (props) => {
     }
 
     const renderMatch = filterMatch(props.position, props.tier) && filterMatch(props.position, props.tier).map((item) => {
-
-        console.log(item.createdAt);
         return (
-            <View style={styles.container} index={item._id}>
+            <View style={styles.container} key={item._id}>
                 <View style={styles.info}>
-                    <Text style={styles.nameText}>{item.name}</Text>
+                    <TouchableOpacity onPress={onPressPlayer}>
+                        <Text style={styles.nameText}>{item.name}</Text>
+                    </TouchableOpacity>
                     <View style={styles.infoImage}>
                         {renderTier(item.tier)}
                         {renderPosition(item.position)}

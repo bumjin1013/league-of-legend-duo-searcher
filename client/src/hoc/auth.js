@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
-
+import { auth } from '../_actions/user_actions';
 
 export default function (SpecificComponent, option, adminRoute = null) {
     function AuthenticationCheck(props) {
