@@ -13,8 +13,9 @@ import Reducer from './src/_reducers'
 import Auth from './src/hoc/auth';
 import MyPageStack from "./src/components/MyPageScreen/Stack/MyPageStack";
 
-const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+Icon.loadFont(); 
 
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
 const Tab = createBottomTabNavigator();
 
@@ -34,6 +35,7 @@ function App () {
 <NavigationContainer>
       <Tab.Navigator 
         screenOptions={{
+          initialRouteName: 'LandingTab',
           tabBarShowLabel: false,
           tabBarStyle: {
             backgroundColor: '#282831'

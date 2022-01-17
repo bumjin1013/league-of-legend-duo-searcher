@@ -10,13 +10,16 @@ const userSchema = mongoose.Schema({
         trim:true,
         unique: 1 
     },
-    nickname: {
+    summoner: {
         type:String,
         maxlength: 30
     },
     password: {
         type: String,
         minglength: 5
+    },
+    chat: {
+        type: Array
     },
     role: {
         type:Number,

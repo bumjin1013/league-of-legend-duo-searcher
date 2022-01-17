@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Certification from '../Certification';
 import MyPageScreen from '../MyPageScreen';
 import Auth from '../../../hoc/auth';
+import RegisterScreen from './RegisterScreen/RegisterScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,9 @@ const MyPageStack = () => {
     return (
         <Stack.Navigator initalRouteName="Main">
             <Stack.Screen name="MyPage" component={Auth(MyPageScreen, null)} options={{ headerShown: false}}/>
+            <Stack.Screen name="Register" component={Auth(RegisterScreen, null)} options={{ headerShown: false}}/>
             <Stack.Screen name="Certification" component={Auth(Certification, null)} options={{ headerShown: false}}/>
+
         </Stack.Navigator>
     )
 }
